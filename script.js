@@ -1,8 +1,14 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks = [];
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+window.onload = async function () {
+  const { collection, getDocs } = window.firebaseFuncs;
+  const querySnapshot = await getDocs(collection(window.db, "tasks"));
+  tasks = [];
+  querySnapshot.forEach((docSnap) => {
+    tasks.push({ id: docSnap.id, ...docSnap.data() });
+  });
+  renderTable();
+};
 
 function renderTable() {
   const tbody = document.getElementById("taskTableBody");
@@ -11,32 +17,29 @@ function renderTable() {
   const selectedMonth = document.getElementById("monthFilter").value;
 
   tasks.forEach((task, index) => {
-    if (selectedMonth !== "All" && task.month !== selectedMonth) {
-      return; // skip this task
-    }
+    if (selectedMonth !== "All" && task.month !== selectedMonth) return;
 
     const tr = document.createElement("tr");
- tr.innerHTML = `
-  <td class="${task.completed ? 'completed' : ''}">${task.name}</td>
-  <td>${task.date}</td>
-  <td>${task.month}</td>
-  <td>${task.by}</td>
-  <td>${task.as}</td>
-  <td>${task.priority}</td>
-  <td>${task.completed ? '✅ Done' : '⏳ Pending'}</td>
-  <td>
-    <button onclick="moveUp(${index})">⬆️</button>
-    <button onclick="moveDown(${index})">⬇️</button>
-    <button onclick="toggleComplete(${index})">${task.completed ? 'Undo' : 'Done'}</button>
-    <button onclick="deleteTask(${index})">❌</button>
-  </td>
-`;
-
+    tr.innerHTML = `
+      <td class="${task.completed ? 'completed' : ''}">${task.name}</td>
+      <td>${task.date}</td>
+      <td>${task.month}</td>
+      <td>${task.by}</td>
+      <td>${task.as}</td>
+      <td>${task.priority}</td>
+      <td>${task.completed ? '✅ Done' : '⏳ Pending'}</td>
+      <td>
+        <button onclick="moveUp(${index})">⬆️</button>
+        <button onclick="moveDown(${index})">⬇️</button>
+        <button onclick="toggleComplete(${index})">${task.completed ? 'Undo' : 'Done'}</button>
+        <button onclick="deleteTask(${index})">❌</button>
+      </td>
+    `;
     tbody.appendChild(tr);
   });
 }
 
-function addTask(e) {
+async function addTask(e) {
   e.preventDefault();
 
   const name = document.getElementById("taskName").value;
@@ -46,44 +49,39 @@ function addTask(e) {
   const as = document.getElementById("taskAs").value;
   const priority = document.getElementById("taskPriority").value;
 
-  tasks.push({ name, date, month, by, as, priority, completed: false });
-  saveTasks();
-  renderTable();
+  const { addDoc, collection } = window.firebaseFuncs;
+  const docRef = await addDoc(collection(window.db, "tasks"), {
+    name, date, month, by, as, priority, completed: false
+  });
 
+  tasks.push({ id: docRef.id, name, date, month, by, as, priority, completed: false });
+  renderTable();
   document.getElementById("taskForm").reset();
 }
 
-function toggleComplete(index) {
-  tasks[index].completed = !tasks[index].completed;
-  saveTasks();
+async function toggleComplete(index) {
+  const task = tasks[index];
+  task.completed = !task.completed;
+
+  const { doc, updateDoc } = window.firebaseFuncs;
+  await updateDoc(doc(window.db, "tasks", task.id), { completed: task.completed });
+
   renderTable();
 }
-function moveUp(index) {
-  if (index > 0) {
-    [tasks[index], tasks[index - 1]] = [tasks[index - 1], tasks[index]];
-    saveTasks();
-    renderTable();
-  }
-}
 
-function moveDown(index) {
-  if (index < tasks.length - 1) {
-    [tasks[index], tasks[index + 1]] = [tasks[index + 1], tasks[index]];
-    saveTasks();
-    renderTable();
-  }
-}
+async function deleteTask(index) {
+  const task = tasks[index];
 
+  const { doc, deleteDoc } = window.firebaseFuncs;
+  await deleteDoc(doc(window.db, "tasks", task.id));
 
-function deleteTask(index) {
   tasks.splice(index, 1);
-  saveTasks();
   renderTable();
 }
+
 function moveUp(index) {
   if (index > 0) {
     [tasks[index], tasks[index - 1]] = [tasks[index - 1], tasks[index]];
-    saveTasks();
     renderTable();
   }
 }
@@ -91,11 +89,8 @@ function moveUp(index) {
 function moveDown(index) {
   if (index < tasks.length - 1) {
     [tasks[index], tasks[index + 1]] = [tasks[index + 1], tasks[index]];
-    saveTasks();
     renderTable();
   }
 }
-
 
 document.getElementById("taskForm").addEventListener("submit", addTask);
-renderTable();
