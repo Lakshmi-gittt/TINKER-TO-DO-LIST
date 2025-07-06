@@ -1,0 +1,85 @@
+body {
+  font-family: 'Georgia', serif;
+  margin: 0;
+  padding: 0;
+  background-image:url('image/back1.jpeg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+  .container {
+  background-color: rgba(205, 150, 150, 0.5); /* muted pink transparent */
+  backdrop-filter: blur(1px);                /* soft blur behind */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(80, 40, 40, 0.2); /* vintage shadow */
+  font-family: 'Special Elite', monospace;     /* retro font */
+  max-width: 900px;
+  margin: 60px auto;
+  position: relative;
+  z-index: 1;
+}
+select {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #fdf6e3;
+  border: 1px solid #aaa;
+  font-family: 'Courier New', monospace;
+}
+
+
+
+h1 {
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+input, select, button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background-color: #fdf6e3;
+}
+
+button {
+  background-color: #8b5e3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #6b4221;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fffaf0;
+  font-size: 15px;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}

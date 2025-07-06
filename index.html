@@ -1,0 +1,72 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📜 Tinker yearly To-Do List</h1>
+    <form id="taskForm">
+  <input type="text" id="taskName" placeholder="Task name" required />
+  <input type="date" id="taskDate" required />
+  <input type="text" id="taskMonth" placeholder="Month" required />
+  <input type="text" id="taskBy" placeholder="By " required />
+  <input type="text" id="taskAs" placeholder="As" required />
+  <select id="taskPriority">
+    <option value="Low">Low</option>
+    <option value="Medium" selected>Medium</option>
+    <option value="High">High</option>
+  </select>
+  <select id="taskAs" required>
+  <option value="">As</option>
+  <option value="Intracampus "> Intracampus</option>
+  <option value="intercampus"> intercampus</option>
+  <option value="foundation decide">foundation</option>
+   
+</select>
+
+  <button type="submit">Add Task</button>
+</form>
+<div class="filter-section">
+  <label for="monthFilter">Filter by Month:</label>
+  <select id="monthFilter" onchange="renderTable()">
+    <option value="All">All Months</option>
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+  </select>
+</div>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Date</th>
+      <th>Month</th>
+      <th>By</th>
+      <th>As</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="taskTableBody"></tbody>
+</table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
