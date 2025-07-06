@@ -6,36 +6,7 @@
   <title>To-Do List</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<!-- Firebase SDK -->
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getFirestore, collection, addDoc, getDocs,
-    doc, deleteDoc, updateDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-   // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDaV7f9MQv7fZkrNsPrqQc1Rozf8Dncqx0",
-  authDomain: "tinkertodolist.firebaseapp.com",
-  projectId: "tinkertodolist",
-  storageBucket: "tinkertodolist.firebasestorage.app",
-  messagingSenderId: "827903412940",
-  appId: "1:827903412940:web:c865125285085a73fe1069",
-  measurementId: "G-KHTMBKZP6V"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-</script>
 
 <body>
   <div class="container">
@@ -98,6 +69,6 @@ const analytics = getAnalytics(app);
 </table>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

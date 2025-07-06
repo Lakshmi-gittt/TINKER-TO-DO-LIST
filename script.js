@@ -1,8 +1,30 @@
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+import {
+  getFirestore, collection, addDoc, getDocs,
+  doc, updateDoc, deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ✅ Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDaV7f9MQv7fZkrNsPrqQc1Rozf8Dncqx0",
+  authDomain: "tinkertodolist.firebaseapp.com",
+  projectId: "tinkertodolist",
+  storageBucket: "tinkertodolist.appspot.com", // FIXED typo here
+  messagingSenderId: "827903412940",
+  appId: "1:827903412940:web:c865125285085a73fe1069",
+  measurementId: "G-KHTMBKZP6V"
+};
+
+// ✅ Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
 let tasks = [];
 
 window.onload = async function () {
-  const { collection, getDocs } = window.firebaseFuncs;
-  const querySnapshot = await getDocs(collection(window.db, "tasks"));
+  const querySnapshot = await getDocs(collection(db, "tasks"));
   tasks = [];
   querySnapshot.forEach((docSnap) => {
     tasks.push({ id: docSnap.id, ...docSnap.data() });
@@ -49,8 +71,7 @@ async function addTask(e) {
   const as = document.getElementById("taskAs").value;
   const priority = document.getElementById("taskPriority").value;
 
-  const { addDoc, collection } = window.firebaseFuncs;
-  const docRef = await addDoc(collection(window.db, "tasks"), {
+  const docRef = await addDoc(collection(db, "tasks"), {
     name, date, month, by, as, priority, completed: false
   });
 
@@ -62,19 +83,13 @@ async function addTask(e) {
 async function toggleComplete(index) {
   const task = tasks[index];
   task.completed = !task.completed;
-
-  const { doc, updateDoc } = window.firebaseFuncs;
-  await updateDoc(doc(window.db, "tasks", task.id), { completed: task.completed });
-
+  await updateDoc(doc(db, "tasks", task.id), { completed: task.completed });
   renderTable();
 }
 
 async function deleteTask(index) {
   const task = tasks[index];
-
-  const { doc, deleteDoc } = window.firebaseFuncs;
-  await deleteDoc(doc(window.db, "tasks", task.id));
-
+  await deleteDoc(doc(db, "tasks", task.id));
   tasks.splice(index, 1);
   renderTable();
 }
