@@ -108,4 +108,9 @@ function moveDown(index) {
   }
 }
 
-document.getElementById("taskForm").addEventListener("submit", addTask);
+document.getElementById("taskForm").addEventListener("submit", addTask);6
+// 🔓 Make functions accessible to HTML inline onclick
+window.toggleComplete = toggleComplete;
+window.moveUp = moveUp;
+window.moveDown = moveDown;
+window.deleteTask = deleteTask;
