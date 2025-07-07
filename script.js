@@ -50,10 +50,13 @@ function renderTable() {
       <td>${task.as}</td>
       <td>${task.priority}</td>
       <td>${task.completed ? '✅ Done' : '⏳ Pending'}</td>
+      <td>${task.description}</td>
+
       <td>
         <button onclick="moveUp(${index})">⬆️</button>
         <button onclick="moveDown(${index})">⬇️</button>
         <button onclick="toggleComplete(${index})">${task.completed ? 'Undo' : 'Done'}</button>
+        <button onclick="editTask(${index})">✏️</button>
         <button onclick="deleteTask(${index})">❌</button>
       </td>
     `;
@@ -70,12 +73,14 @@ async function addTask(e) {
   const by = document.getElementById("taskBy").value;
   const as = document.getElementById("taskAs").value;
   const priority = document.getElementById("taskPriority").value;
+  const description = document.getElementById("taskDescription").value;
+
 
   const docRef = await addDoc(collection(db, "tasks"), {
-    name, date, month, by, as, priority, completed: false
+    name, date, month, by, as, priority,description, completed: false
   });
 
-  tasks.push({ id: docRef.id, name, date, month, by, as, priority, completed: false });
+  tasks.push({ id: docRef.id, name, date, month, by, as, priority,description, completed: false });
   renderTable();
   document.getElementById("taskForm").reset();
 }
@@ -93,6 +98,23 @@ async function deleteTask(index) {
   tasks.splice(index, 1);
   renderTable();
 }
+async function editTask(index) {
+  const task = tasks[index];
+  document.getElementById("taskName").value = task.name;
+  document.getElementById("taskDate").value = task.date;
+  document.getElementById("taskMonth").value = task.month;
+  document.getElementById("taskBy").value = task.by;
+  document.getElementById("taskAs").value = task.as;
+  document.getElementById("taskPriority").value = task.priority;
+  document.getElementById("taskDescription").value = task.description;
+
+    await deleteDoc(doc(db, "tasks", task.id));
+  tasks.splice(index, 1);
+
+  renderTable(); // Re-render without the old version
+}
+
+
 
 function moveUp(index) {
   if (index > 0) {
@@ -114,3 +136,5 @@ window.toggleComplete = toggleComplete;
 window.moveUp = moveUp;
 window.moveDown = moveDown;
 window.deleteTask = deleteTask;
+window.editTask = editTask;
+
