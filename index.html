@@ -15,19 +15,20 @@
   <input type="text" id="taskName" placeholder="Task name" required />
   <input type="date" id="taskDate" required />
   <input type="text" id="taskMonth" placeholder="Month" required />
-  <input type="text" id="taskBy" placeholder="By " required />
-  <input type="text" id="taskAs" placeholder="As" required />
-  <select id="taskPriority">
+    <select id="taskPriority">
     <option value="Low">Low</option>
     <option value="Medium" selected>Medium</option>
     <option value="High">High</option>
   </select>
   <select id="taskAs" required>
-  <option value="">As</option>
   <option value="Intracampus ">campus activity</option>
   <option value="intercampus"> intercampus</option>
   <option value="foundation decide">Study jams</option>
    
+</select>
+<select id="taskBy" required>
+  <option value=" FOUNDATION ">FOUNDATION</option>
+  <option value="CORE">CORE TEAM</option>   
 </select>
 
   <button type="submit">Add Task</button>
